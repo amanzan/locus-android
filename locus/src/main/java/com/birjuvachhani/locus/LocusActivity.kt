@@ -70,8 +70,6 @@ class LocusActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRe
 
     private var permissions: Array<String> = arrayOf()
 
-    private var rationaleDenied = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location_permission)
@@ -102,7 +100,7 @@ class LocusActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRe
         logDebug("Initializing permission model")
         if (!hasAllPermissions()) {
             //doesn't have all the permission, checking if user has been asked for permission earlier
-            if (needToShowRationale() && !rationaleDenied) {
+            if (needToShowRationale() && !pref.getBoolean(Constants.RATIONALE_DENIED, false)) {
                 // User has been asked for the permission
                 logDebug("should display rationale for location permission")
                 showPermissionRationale()
@@ -145,7 +143,7 @@ class LocusActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRe
                 dialog.dismiss()
             }
             .setNegativeButton(R.string.deny) { dialog, _ ->
-                rationaleDenied = true
+                pref.edit().putBoolean(Constants.RATIONALE_DENIED, true).apply()
                 dialog.dismiss()
                 onPermissionDenied()
             }
@@ -194,7 +192,7 @@ class LocusActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRe
      * Sends denied broadcast when user denies to grant location permission
      */
     private fun onPermissionDenied() {
-        if (!needToShowRationale() || rationaleDenied) {
+        if (!needToShowRationale() || pref.getBoolean(Constants.RATIONALE_DENIED, false)) {
             showPermanentlyDeniedDialog()
         } else {
             logDebug("Sending permission denied")

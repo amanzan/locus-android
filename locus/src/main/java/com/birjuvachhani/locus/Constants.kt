@@ -32,4 +32,5 @@ internal object Constants {
     internal const val LOCATION_SETTINGS_DENIED = "location_settings_denied"
     internal const val INTENT_EXTRA_CONFIGURATION = "request"
     internal const val INTENT_EXTRA_IS_SINGLE_UPDATE = "isSingleUpdate"
+    internal const val RATIONALE_DENIED = "rationale_denied"
 }
