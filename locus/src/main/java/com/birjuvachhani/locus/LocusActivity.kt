@@ -98,9 +98,9 @@ class LocusActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRe
     private fun initPermissionModel() {
 
         logDebug("Initializing permission model")
-        if (!hasAllPermissions()) {
+        if (!hasAllPermissions() && !pref.getBoolean(Constants.RATIONALE_DENIED, false)) {
             //doesn't have all the permission, checking if user has been asked for permission earlier
-            if (needToShowRationale() && !pref.getBoolean(Constants.RATIONALE_DENIED, false)) {
+            if (needToShowRationale()) {
                 // User has been asked for the permission
                 logDebug("should display rationale for location permission")
                 showPermissionRationale()
