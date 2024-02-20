@@ -13,8 +13,15 @@ import com.huawei.hms.api.HuaweiApiAvailability
  *
  * @return an instance of [Boolean].
  */
-internal fun Context.isGSMAvailable(): Boolean = GoogleApiAvailability.getInstance()
-    .isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS
+internal fun Context.isGSMAvailable(): Boolean {
+    return try {
+        GoogleApiAvailability.getInstance()
+            .isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS
+    } catch (e: Exception) {
+        false
+    }
+}
+
 
 /**
  * Checks if the huawei mobile service is available.
@@ -23,8 +30,14 @@ internal fun Context.isGSMAvailable(): Boolean = GoogleApiAvailability.getInstan
  *
  * @return an instance of [Boolean].
  */
-internal fun Context.isHSMAvailable(): Boolean = HuaweiApiAvailability.getInstance()
-    .isHuaweiMobileServicesAvailable(this) == com.huawei.hms.api.ConnectionResult.SUCCESS
+internal fun Context.isHSMAvailable(): Boolean {
+    return try {
+        HuaweiApiAvailability.getInstance()
+            .isHuaweiMobileServicesAvailable(this) == com.huawei.hms.api.ConnectionResult.SUCCESS
+    } catch (e: NoClassDefFoundError) {
+        false
+    }
+}
 
 /**
  * Checks if the Google play service or the Huawei mobile service is available.
